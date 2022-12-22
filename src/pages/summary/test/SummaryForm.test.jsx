@@ -1,5 +1,6 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import SummaryForm from "../SummaryForm";
+import userEvent from "@testing-library/user-event"
 
 test("checkbox and confirm button initial", () => {
     render(<SummaryForm />)
@@ -10,13 +11,14 @@ test("checkbox and confirm button initial", () => {
     expect(button).toBeDisabled()
 })
 
-test("click checkbox button should be enable and second click should be disable", () => {
+test("click checkbox button should be enable and second click should be disable", async () => {
+    const user = userEvent.setup()
     render(<SummaryForm />)
     const checkbox = screen.getByRole("checkbox", {name:/terms and conditions/i})
     const button = screen.getByRole('button',{name:/confirm order/i})
-    fireEvent.click(checkbox)
+    await user.click(checkbox)
     expect(button).toBeEnabled()
 
-    fireEvent.click(checkbox)
+    await user.click(checkbox)
     expect(button).toBeDisabled()
 })
